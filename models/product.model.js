@@ -1,11 +1,25 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+'user strict';
+var sql = require('../db');
 
-let ProductSchema = new Schema({
-    name: {type: String, required: true, max: 100},
-    price: {type: Number, required: true},
-});
+//Task object constructor
+var Task = function(task){
+    this.task = task.task;
+    this.status = task.status;
+    this.created_at = new Date();
+};
 
+Task.getAllTask = function (result) {
+        sql.query("Select * from tasks", function (err, res) {
 
-// Export the model
-module.exports = mongoose.model('Product', ProductSchema)
+                if(err) {
+                    console.log("error: ", err);
+                    result(null, err);
+                }
+                else{
+                  console.log('tasks : ', res);  
+
+                 result(null, res);
+                }
+            });   
+};
+module.exports= Task;
